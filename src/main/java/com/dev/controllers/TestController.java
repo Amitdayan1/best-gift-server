@@ -1,6 +1,6 @@
 package com.dev.controllers;
 
-import com.dev.objects.PostObject;
+import com.dev.objects.Product;
 import com.dev.objects.UserObject;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -12,40 +12,24 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 
 @RestController
 public class TestController {
     private  List<UserObject> userObjects;
+    private List<Product> products;
 
     @PostConstruct
     private void init () {
         userObjects = new ArrayList<>();
+        products=new ArrayList<>();
 
     }
-
-
-
     @RequestMapping(value = "/test", method = {RequestMethod.GET, RequestMethod.POST})
     public Object test () {
         return "Adi";
     }
 
-    @RequestMapping(value = "/get-random-value", method = {RequestMethod.GET, RequestMethod.POST})
-    public int random () {
-        Random random = new Random();
-        return random.nextInt();
-    }
-
-    @RequestMapping(value = "/get-post", method = {RequestMethod.GET, RequestMethod.POST})
-    public PostObject getPost () {
-        PostObject postObject = new PostObject();
-        postObject.setSenderName("Shai Givati");
-        postObject.setContent("This is my first post.");
-        postObject.setDate("01-01-2021 10:04:05");
-        return postObject;
-    }
 
     @RequestMapping("sign-in")
     public String signIn (String username, String password) {
@@ -86,7 +70,6 @@ public class TestController {
         String myHash = null;
         try {
             String hash = "35454B055CC325EA1AF2126E27707052";
-
             MessageDigest md = MessageDigest.getInstance("MD5");
             md.update((username + password).getBytes());
             byte[] digest = md.digest();
@@ -97,18 +80,6 @@ public class TestController {
         }
         return myHash;
     }
-
-    @RequestMapping("add-post")
-    public boolean addPost (String token, String content) {
-        boolean success = false;
-        UserObject userObject = getUserByToken(token);
-        if (userObject != null) {
-            success = true;
-            userObject.addPost(content);
-        }
-        return success;
-    }
-
     private UserObject getUserByToken (String token) {
         UserObject found = null;
         for (UserObject userObject : this.userObjects) {
@@ -119,16 +90,27 @@ public class TestController {
         }
         return found;
     }
+    @RequestMapping("get-products")
+    public List<Product> getProducts(){
+        Product p1=new Product("My Way",200,"Food","south","0546778559","images/myWay.PNG");
+        Product p2=new Product("Orient Jerusalem",6500,"Vacation","Center","025955594","images/orient.PNG");
+        Product p3=new Product("Hotel Rimonim",3400, "Vacation", "South", "086988877","images/rimonim.PNG");
+        Product p4=new Product("Queen Of Sheba", 6500,"Vacation", "South", "086985337", "images/sheba.PNG");
+        Product p5=new Product( "Milos Dead Sea", 1000, "Vacation", "East", "029714557", "images/milos.PNG");
+        Product p6=new Product("H&M",30,"Clothing","South","1800993667","images/hNm.PNG");
+        Product p7=new Product("2C",600,"Food","Central","036595114","images/2c.PNG");
+        Product p8=new Product("Club Hotel",3500,"Vacation","North","086932447","images/clubHotel.PNG");
+        this.products.add(p1);
+        this.products.add(p2);
+        this.products.add(p3);
+        this.products.add(p4);
+        this.products.add(p5);
+        this.products.add(p6);
+        this.products.add(p7);
+        this.products.add(p8);
 
-    @RequestMapping("get-posts")
-    public List<PostObject> getPosts (String token) {
-        UserObject userObject = getUserByToken(token);
-        return userObject.getPosts();
+        return this.products;
     }
-
-
-
-
 
 
 }
