@@ -7,14 +7,18 @@ public class Product {
     private String region;
     private String phone;
     private String imgLink;
+    private String uniqId;
+    private boolean isSelected;
 
-    public Product(String name, int price, String category, String region, String phone, String imgLink) {
+    public Product(String name, int price, String category, String region, String phone, String imgLink,String uniqId) {
         this.name = name;
         this.price = price;
         this.category = category;
         this.region = region;
         this.phone = phone;
         this.imgLink = imgLink;
+        this.uniqId=uniqId;
+        this.isSelected=false;
     }
 
     public String getName() {
@@ -31,6 +35,14 @@ public class Product {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public boolean isSelected() {
+        return isSelected;
+    }
+
+    public void setSelected(boolean selected) {
+        isSelected = selected;
     }
 
     public String getCategory() {
@@ -63,5 +75,13 @@ public class Product {
 
     public void setImgLink(String imgLink) {
         this.imgLink = imgLink;
+    }
+
+    public String getUniqId() {
+        return uniqId;
+    }
+
+    public void setUniqId(String uniqId) {
+        this.uniqId = uniqId;
     }
 }
