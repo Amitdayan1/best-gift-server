@@ -12,7 +12,6 @@ public class UserObject {
     private List<Product> productList;
 
 
-
     public UserObject(String firstName, String lastName, String username, String emailAddress, String password, String token,List<Product> productList) {
         this.firstName = firstName;
         this.lastName = lastName;
