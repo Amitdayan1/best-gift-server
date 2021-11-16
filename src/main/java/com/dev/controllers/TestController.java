@@ -5,13 +5,11 @@ import com.dev.objects.Product;
 import com.dev.objects.UserObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.PostConstruct;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,32 +32,48 @@ public class TestController {
     @Autowired
     private Persist persist;
 
+//    @RequestMapping("test")
+//  public boolean test( String firstName,
+//                       String lastName,
+//                       String username,
+//                       String emailAddress,
+//                       String password,
+//                       String token){
+//        boolean flag = persist.doesUsernameFree(username);
+//        if(flag){
+//        UserObject userObject=new UserObject(firstName,
+//                lastName,
+//                username,
+//                emailAddress,
+//                password,
+//                token);
+//        persist.addUser(userObject);}
+//        return flag;
+//    }
+
+
+
     @RequestMapping("sign-in")
     public String signIn (String username, String password) {
-        return persist.doesUserExists(username, password);
+        return persist.userSignIn(username, password);
     }
-    @RequestMapping("test")
-    public String test(String username){
-        return persist.doesUsernameFree(username);}
-
-//    @RequestMapping("sign-up")
-//    public boolean createAccount (String firstName,String lastName,String username,String emailAddress, String password) {
-//        boolean alreadyExists = false;
-//      alreadyExists=persist.doesUsernameFree(username);
-//        if (alreadyExists) {
-//            UserObject userObject = new UserObject();
-//            userObject.setFirstName(firstName);
-//            userObject.setLastName(lastName);
-//            userObject.setUsername(username);
-//            userObject.setEmailAddress(emailAddress);
-//            userObject.setPassword(password);
-//            String hash = createHash(username, password);
-//            userObject.setToken(hash);
-//            this.userObjects.add(userObject);
-//
-//        }
-//        return alreadyExists;
-//    }
+    @RequestMapping("sign-up")
+    public boolean createAccount (String firstName,String lastName,String username,String emailAddress, String password) {
+        boolean alreadyExists ,success;
+      alreadyExists=persist.doesUsernameFree(username);
+        if (alreadyExists) {
+            UserObject userObject = new UserObject();
+            userObject.setFirstName(firstName);
+            userObject.setLastName(lastName);
+            userObject.setUsername(username);
+            userObject.setEmailAddress(emailAddress);
+            userObject.setPassword(password);
+            String hash = createHash(username, password);
+            userObject.setToken(hash);
+            persist.addUser(userObject);
+        }
+        return alreadyExists;
+    }
 
     public String createHash (String username, String password) {
         String myHash = null;
@@ -78,14 +92,7 @@ public class TestController {
 
 
     private UserObject getUserByToken (String token) {
-        UserObject found = null;
-        for (UserObject userObject : this.userObjects) {
-            if (userObject.getToken().equals(token)) {
-                found = userObject;
-                break;
-            }
-        }
-        return found;
+     return persist.getUserByToken(token);
     }
     private Product getProductByUniqId(String uniqId){
         Product found=null;
@@ -100,9 +107,7 @@ public class TestController {
     public UserObject getUser(String token){
         return getUserByToken(token);}
     @RequestMapping("get-products")
-    public List<Product> getProducts(){
-        return this.products;
-    }
+    public List<Product> getProducts(){return persist.getProducts();}
     @RequestMapping("set-user-cart")
     public void setUserCart(String token,String uniqId){
         Product product=getProductByUniqId(uniqId);
@@ -124,11 +129,4 @@ public class TestController {
     public String getAccessKey () {
         return this.accessKey;
     }
-//    @RequestMapping("test")
-//    public List<Product> getTest() throws SQLException {
-//        Persist persist=new Persist();
-//        return persist.getProducts();
-//    }
-
 }
-

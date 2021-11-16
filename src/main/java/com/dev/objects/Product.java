@@ -20,6 +20,16 @@ public class Product {
         this.uniqId=uniqId;
         this.isSelected=false;
     }
+    public Product(){
+        this.name = "";
+        this.price = 0;
+        this.category = "";
+        this.region = "";
+        this.phone = "";
+        this.imgLink = "";
+        this.uniqId="0";
+        this.isSelected=false;
+    }
 
     public String getName() {
         return name;

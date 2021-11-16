@@ -9,17 +9,17 @@ public class UserObject {
     private String emailAddress;
     private String password;
     private String token;
-    private List<Product> productList;
 
 
-    public UserObject(String firstName, String lastName, String username, String emailAddress, String password, String token,List<Product> productList) {
+
+    public UserObject(String firstName, String lastName, String username, String emailAddress, String password, String token) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.emailAddress = emailAddress;
         this.password = password;
         this.token = token;
-        this.productList=productList;
+
     }
     public UserObject() {
         this.firstName = "";
@@ -28,7 +28,7 @@ public class UserObject {
         this.emailAddress = "";
         this.password = "";
         this.token = "";
-        this.productList=null;
+
     }
 
     public String getFirstName() {
@@ -78,11 +78,5 @@ public class UserObject {
     public void setToken(String token) {
         this.token = token;
     }
-    public List<Product> getProductList() {
-        return productList;
-    }
 
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
-    }
 }
