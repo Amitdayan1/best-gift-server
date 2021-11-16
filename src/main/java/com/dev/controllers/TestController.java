@@ -33,7 +33,7 @@ public class TestController {
     private Persist persist;
 
 //    @RequestMapping("test")
-//  public boolean test( String firstName,
+//  public boolean test(String firstName,
 //                       String lastName,
 //                       String username,
 //                       String emailAddress,
@@ -59,20 +59,14 @@ public class TestController {
     }
     @RequestMapping("sign-up")
     public boolean createAccount (String firstName,String lastName,String username,String emailAddress, String password) {
-        boolean alreadyExists ,success;
-      alreadyExists=persist.doesUsernameFree(username);
-        if (alreadyExists) {
-            UserObject userObject = new UserObject();
-            userObject.setFirstName(firstName);
-            userObject.setLastName(lastName);
-            userObject.setUsername(username);
-            userObject.setEmailAddress(emailAddress);
-            userObject.setPassword(password);
+        boolean isFree;
+      isFree=persist.doesUsernameFree(username);
+        if (isFree) {
             String hash = createHash(username, password);
-            userObject.setToken(hash);
+            UserObject userObject = new UserObject(firstName,lastName,username,emailAddress,password,hash);
             persist.addUser(userObject);
         }
-        return alreadyExists;
+        return isFree;
     }
 
     public String createHash (String username, String password) {
