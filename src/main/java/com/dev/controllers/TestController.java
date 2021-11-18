@@ -16,15 +16,12 @@ import java.util.List;
 
 @RestController
 public class TestController {
-    private  List<UserObject> userObjects;
-    private List<Product> products;
     private List<Product> cartList;
     private String accessKey;
 
     @PostConstruct
     private void init () {
-        userObjects = new ArrayList<>();
-        products=new ArrayList<>();
+
         cartList=new ArrayList<>();
 
         accessKey="?access_key=31ac57b1c066ae6c762417e3a95af060&symbols=";
@@ -70,16 +67,6 @@ public class TestController {
         }
         return myHash;
     }
-
-    private Product getProductByUniqId(String uniqId){
-        Product found=null;
-        for (Product product:this.products){
-            if(product.getUniqId().equals(uniqId)){
-                found=product;
-                break;
-            }
-        }return found;
-    }
     @RequestMapping("get-user")
     public UserObject getUser(String token){
         return getUserByToken(token);}
@@ -88,23 +75,20 @@ public class TestController {
     }
     @RequestMapping("get-products")
     public List<Product> getProducts(){return persist.getProducts();}
-    @RequestMapping("set-user-cart")
+    @RequestMapping("add-to-cart")
     public void setUserCart(String token,String uniqId){
-        Product product=getProductByUniqId(uniqId);
-        product.setSelected(true);
-        this.cartList.add(product);
-    }
-    @RequestMapping("update-user-cart")
-    public void updateUserCart(String token,String uniqId){
-        Product product=getProductByUniqId(uniqId);
-        product.setSelected(false);
-        this.cartList.remove(product);
-    }
+   persist.addToCart(token,uniqId);}
+
     @RequestMapping("get-user-cart")
     public List<Product> getUserCart(String token){
-        return this.cartList;
+        return persist.getCartListByToken(token);
     }
-
+    //    @RequestMapping("update-user-cart")
+//    public void updateUserCart(String token,String uniqId){
+//        Product product=getProductByUniqId(uniqId);
+//        product.setSelected(false);
+//        this.cartList.remove(product);
+//    }
     @RequestMapping("access-key")
     public String getAccessKey () {
         return this.accessKey;
