@@ -33,26 +33,13 @@ public class TestController {
     private Persist persist;
 
 //    @RequestMapping("test")
-//  public boolean test(String firstName,
-//                       String lastName,
-//                       String username,
-//                       String emailAddress,
-//                       String password,
-//                       String token){
-//        boolean flag = persist.doesUsernameFree(username);
-//        if(flag){
-//        UserObject userObject=new UserObject(firstName,
-//                lastName,
-//                username,
-//                emailAddress,
-//                password,
-//                token);
-//        persist.addUser(userObject);}
-//        return flag;
+//  public UserObject test(){
+//     return persist.test("19");
 //    }
 
-
-
+//
+//@RequestMapping("user-log-in")
+//public int userLogIn(String token){return persist.doesUserLoggedIn(token);}
     @RequestMapping("sign-in")
     public String signIn (String username, String password) {
         return persist.userSignIn(username, password);
@@ -84,10 +71,6 @@ public class TestController {
         return myHash;
     }
 
-
-    private UserObject getUserByToken (String token) {
-     return persist.getUserByToken(token);
-    }
     private Product getProductByUniqId(String uniqId){
         Product found=null;
         for (Product product:this.products){
@@ -100,6 +83,9 @@ public class TestController {
     @RequestMapping("get-user")
     public UserObject getUser(String token){
         return getUserByToken(token);}
+    private UserObject getUserByToken (String token) {
+        return persist.getUserByToken(token);
+    }
     @RequestMapping("get-products")
     public List<Product> getProducts(){return persist.getProducts();}
     @RequestMapping("set-user-cart")

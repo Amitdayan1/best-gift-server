@@ -32,13 +32,15 @@ public class Persist {
         try {
             PreparedStatement preparedStatement = this.connection.prepareStatement(
                     "SELECT token FROM users WHERE username = ? AND password = ?");
+            PreparedStatement preparedStatement1 = this.connection.prepareStatement
+                    ("UPDATE users SET isLoggedOn=1 WHERE username=?");
+            preparedStatement1.setString(1, username);
             preparedStatement.setString(1, username);
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 token = resultSet.getString("token");
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -108,20 +110,36 @@ public class Persist {
         }
         return userObject;
     }
-    public void addUser(UserObject userObject){
+
+    public void addUser(UserObject userObject) {
         try {
-            PreparedStatement preparedStmt = connection.prepareStatement(" INSERT INTO users (firstName,lastName,username,emailAddress,password,token)"
-                    + " values (?, ?, ?, ?, ?,?)");
-            preparedStmt.setString (1, userObject.getFirstName());
-            preparedStmt.setString (2, userObject.getLastName());
-            preparedStmt.setString   (3, userObject.getUsername());
-            preparedStmt.setString(4,userObject.getEmailAddress());
+            PreparedStatement preparedStmt = connection.prepareStatement(" INSERT INTO users (firstName,lastName,username,emailAddress,password,token,isLoggedOn)"
+                    + " values (?, ?, ?, ?, ?,?,0)");
+            preparedStmt.setString(1, userObject.getFirstName());
+            preparedStmt.setString(2, userObject.getLastName());
+            preparedStmt.setString(3, userObject.getUsername());
+            preparedStmt.setString(4, userObject.getEmailAddress());
             preparedStmt.setString(5, userObject.getPassword());
-            preparedStmt.setString (6, userObject.getToken());
+            preparedStmt.setString(6, userObject.getToken());
             preparedStmt.execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-}
 
+//    public int doesUserLoggedIn(String token) {
+//        int flag=0;
+//        try {
+//            PreparedStatement preparedStatement = this.connection.prepareStatement(
+//                    "SELECT isLoggedOn FROM users WHERE token = ?");
+//            preparedStatement.setString(1, token);
+//            ResultSet rs = preparedStatement.executeQuery();
+//            if (rs.next()) {
+//                flag = rs.getInt("isLoggedOn");
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return flag;
+//    }
+}
