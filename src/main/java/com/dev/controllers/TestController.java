@@ -33,13 +33,13 @@ public class TestController {
     private Persist persist;
 
 //    @RequestMapping("test")
-//  public UserObject test(){
-//     return persist.test("19");
+//  public void test(){
+//        persist.test("0546779544");
 //    }
-
-//
-//@RequestMapping("user-log-in")
-//public int userLogIn(String token){return persist.doesUserLoggedIn(token);}
+    @RequestMapping("user-log-in")
+    public int userLogIn(String token){return persist.doesUserLoggedIn(token);}
+    @RequestMapping("user-log-out")
+    public void userLogOut(String token){persist.userLogOut(token);}
     @RequestMapping("sign-in")
     public String signIn (String username, String password) {
         return persist.userSignIn(username, password);
