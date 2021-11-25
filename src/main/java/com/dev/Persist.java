@@ -94,7 +94,7 @@ public class Persist {
                 product.setRegion(rs.getString("region"));
                 product.setPhone(rs.getString("phone"));
                 product.setImgLink(rs.getString("imgLink"));
-                product.setUniqId(rs.getString("uniq_id"));
+                product.setUniqId(rs.getString("id"));
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -160,11 +160,11 @@ public class Persist {
         String productId;
         try {
             PreparedStatement preparedStatement2 = this.connection.prepareStatement(
-                       "SELECT uniq_id FROM products WHERE uniq_id=?");
+                       "SELECT id FROM products WHERE id=?");
             preparedStatement2.setString(1, uniqId);
             ResultSet rs2 = preparedStatement2.executeQuery();
             if (rs2.next()) {
-                productId = rs2.getString("uniq_id");
+                productId = rs2.getString("id");
                 PreparedStatement preparedStatement = this.connection.prepareStatement(" INSERT INTO pending_products(token,product_id)"
                         + " values (?,?)");
                 preparedStatement.setString(1, token);
@@ -178,15 +178,15 @@ public class Persist {
 
     public List<Product> getCartListByToken(String token) {
         List<Product> productList = new ArrayList<>();
-        Product product=new Product();
         try {
             PreparedStatement preparedStatement3 = this.connection.prepareStatement(
                     "SELECT p.* FROM " +
                             "products p INNER JOIN pending_products pp " +
-                            "WHERE p.uniq_id=pp.product_id AND token=?");
+                            "WHERE p.id=pp.product_id AND token=?");
             preparedStatement3.setString(1, token);
             ResultSet rs3 = preparedStatement3.executeQuery();
             while (rs3.next()){
+                Product product=new Product();
                 product.setName(rs3.getString("name"));
                 product.setPrice(rs3.getInt("price"));
                 product.setCategory(rs3.getString("category"));
@@ -200,4 +200,5 @@ public class Persist {
         }
         return productList;
     }
+
 }

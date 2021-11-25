@@ -75,6 +75,8 @@ public class TestController {
     }
     @RequestMapping("get-products")
     public List<Product> getProducts(){return persist.getProducts();}
+
+
     @RequestMapping("add-to-cart")
     public void setUserCart(String token,String uniqId){
    persist.addToCart(token,uniqId);}
@@ -83,12 +85,7 @@ public class TestController {
     public List<Product> getUserCart(String token){
         return persist.getCartListByToken(token);
     }
-    //    @RequestMapping("update-user-cart")
-//    public void updateUserCart(String token,String uniqId){
-//        Product product=getProductByUniqId(uniqId);
-//        product.setSelected(false);
-//        this.cartList.remove(product);
-//    }
+
     @RequestMapping("access-key")
     public String getAccessKey () {
         return this.accessKey;
